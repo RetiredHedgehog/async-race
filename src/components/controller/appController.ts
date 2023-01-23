@@ -94,7 +94,7 @@ export default class AppController {
       '#' + ((Math.random() * 0xffffff) << 0).toString(16);
 
     for (let i = 0; i < 100; i++) {
-      this.createCar(getRandomName(carBrands, carModels), getRandomColor());
+      await this.createCar(getRandomName(carBrands, carModels), getRandomColor());
     }
   }
 
