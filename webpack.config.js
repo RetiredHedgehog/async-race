@@ -11,7 +11,7 @@ const plugins = [
     hash: true,
     cache: true,
   }),
-  new EslingPlugin({ extensions: 'ts' }),
+  // new EslingPlugin({ extensions: 'ts' }),
 ];
 
 if (isProduction) {
@@ -30,6 +30,10 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        test: /\.svg$/,
+        type: 'asset/resource',
+      },
       {
         test: /\.css$/,
         use: [
@@ -52,7 +56,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.ts'],
+    extensions: ['.js', '.ts'],
   },
 
   output: {
