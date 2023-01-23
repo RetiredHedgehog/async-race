@@ -2,7 +2,6 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "strict": true,
-    "noUnusedLocals": true,
     "module": "CommonJS",
     "target": "es3",
     "moduleResolution": "node",
