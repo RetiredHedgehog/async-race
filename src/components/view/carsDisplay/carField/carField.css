@@ -1,0 +1,12 @@
+.car__wrapper {
+  display: flex;
+}
+
+img {
+  display: block;
+  mask-image: url('../../../../assets/car.svg'); 
+  background-color: black;
+  mask-size: cover;
+  width: 100px;
+  height: 100px;
+}
