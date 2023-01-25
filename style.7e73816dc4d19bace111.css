@@ -1,0 +1,22 @@
+.car__wrapper {
+  display: flex;
+}
+
+img {
+  display: block;
+  -webkit-mask-image: url(48694d6db032406ffc46.svg);
+          mask-image: url(48694d6db032406ffc46.svg); 
+  background-color: black;
+  -webkit-mask-size: cover;
+          mask-size: cover;
+  width: 100px;
+  height: 100px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: rgb(180, 180, 180);
+}
+
