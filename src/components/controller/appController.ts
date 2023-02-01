@@ -155,7 +155,7 @@ export default class AppController {
   async getWinners(
     _page = 1,
     _limit = 10,
-    _sort: 'id' | 'wins' | 'time' = 'id',
+    _sort: 'id' | 'numberOfWins' | 'time' = 'id',
     _order: 'ASC' | 'DESC' = 'ASC'
   ): Promise<[Winner[] | [], number]> {
     const params = `${new URLSearchParams({
@@ -211,13 +211,13 @@ export default class AppController {
     await fetch(`${this.winners}/${id}`, { method: 'DELETE' });
   }
 
-  async updateWinenr(id: number, wins: number, time: number): Promise<void> {
+  async updateWinenr(id: number, numberOfWins: number, time: number): Promise<void> {
     await fetch(`${this.winners}/${id}`, {
       method: 'PUT',
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-      body: JSON.stringify({ wins, time }),
+      body: JSON.stringify({ numberOfWins, time }),
     });
   }
 }
