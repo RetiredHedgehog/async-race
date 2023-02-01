@@ -14,7 +14,12 @@ export default class AppController {
     this.winners = `${apiBaseURL}/winners`;
   }
 
-  async getCars(_page = 1, _limit = 7): Promise<[Car[], number]> {
+  DEFAULT_PAGE_INDEX = 1
+  DEFAULT_ITEMS_PER_GARAGE_PAGE = 7
+  DEFAULT_ITEMS_PER_WINNERS_PAGE = 10
+  DEFAULT_CAR_COLOR = '#ff0000'
+
+  async getCars(_page: number = this.DEFAULT_PAGE_INDEX, _limit: number = this.DEFAULT_ITEMS_PER_GARAGE_PAGE): Promise<[Car[], number]> {
     const params = `${new URLSearchParams({
       _page: `${_page}`,
       _limit: `${_limit}`,
@@ -43,7 +48,7 @@ export default class AppController {
     return car;
   }
 
-  async createCar(name: string, color = '#ff0000'): Promise<Car> {
+  async createCar(name: string, color: string = this.DEFAULT_CAR_COLOR): Promise<Car> {
     const responce = await fetch(`${this.garage}`, {
       method: 'POST',
       headers: new Headers({
@@ -93,7 +98,8 @@ export default class AppController {
     const getRandomColor = (): string =>
       '#' + ((Math.random() * 0xffffff) << 0).toString(16);
 
-    for (let i = 0; i < 100; i++) {
+    const numberOfcarsToCreate = 100
+    for (let i = 0; i < numberOfcarsToCreate; i++) {
       await this.createCar(getRandomName(carBrands, carModels), getRandomColor());
     }
   }
@@ -153,8 +159,8 @@ export default class AppController {
   }
 
   async getWinners(
-    _page = 1,
-    _limit = 10,
+    _page = this.DEFAULT_PAGE_INDEX,
+    _limit = this.DEFAULT_ITEMS_PER_WINNERS_PAGE,
     _sort: 'id' | 'numberOfWins' | 'time' = 'id',
     _order: 'ASC' | 'DESC' = 'ASC'
   ): Promise<[Winner[] | [], number]> {
