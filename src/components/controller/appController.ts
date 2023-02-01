@@ -30,12 +30,12 @@ export default class AppController {
       method: 'GET',
     });
 
-    const carsArr: Car[] | [] =
+    const cars: Car[] | [] =
       (await responce.json().then((data) => data)) || [];
     const totalCount =
-      Number(responce.headers.get('X-Total-Count')) || carsArr.length;
+      Number(responce.headers.get('X-Total-Count')) || cars.length;
 
-    return [carsArr, totalCount];
+    return [cars, totalCount];
   }
 
   async getCar(id: number): Promise<Car | object> {
@@ -137,7 +137,7 @@ export default class AppController {
     return data;
   }
 
-  async driveCar(id: number): Promise<{ success: boolean }> {
+  async driveCar(id: number): Promise<{ isDriving: boolean }> {
     const params = `${new URLSearchParams({
       id: `${id}`,
       status: 'drive',
@@ -150,12 +150,12 @@ export default class AppController {
 
     // TODO: throw error and catch to stop a car?
     if (responce.status === 500) {
-      return { success: false };
+      return { isDriving: false };
     }
 
-    const success = await responce.json().then((data) => data);
+    const isDriving = await responce.json().then((data) => data);
 
-    return success;
+    return isDriving;
   }
 
   async getWinners(
