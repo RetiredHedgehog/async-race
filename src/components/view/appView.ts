@@ -42,19 +42,25 @@ export default class AppView {
     const buttonGetCars = document.createElement('button');
     buttonGetCars.classList.add('btn', 'btn-get-cars');
     buttonGetCars.innerText = 'Get cars';
-    buttonGetCars.addEventListener('click', async () => {
+
+    const getCars = async () => {
       await updateCarCounter(controller);
       fillCarsDisplay(controller);
-    });
+    }
+
+    buttonGetCars.addEventListener('click', getCars);
 
     const buttonGenerateCars = document.createElement('button');
     buttonGenerateCars.classList.add('btn', 'btn-generate-cars');
     buttonGenerateCars.innerText = 'Generate cars';
-    buttonGenerateCars.addEventListener('click', async () => {
+
+    const generateCars = async () => {
       await controller.createCars();
       fillCarsDisplay(controller);
       await updateCarCounter(controller);
-    });
+    }
+
+    buttonGenerateCars.addEventListener('click', generateCars);
 
     this.root.append(buttonGetCars, buttonGenerateCars, wrapper);
     updateCarCounter(controller);
