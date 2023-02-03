@@ -11,7 +11,7 @@ const plugins = [
     hash: true,
     cache: true,
   }),
-  // new EslingPlugin({ extensions: 'ts' }),
+  new EslingPlugin({ extensions: 'ts' }),
 ];
 
 if (isProduction) {

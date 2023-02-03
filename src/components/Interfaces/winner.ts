@@ -1,5 +1,5 @@
 export interface Winner {
   id: number;
-  wins: number;
+  numberOfWins: number;
   time: number;
 }

@@ -7,7 +7,7 @@ export default class App {
   view: AppView;
 
   constructor() {
-    this.controller = new AppController(`http://127.0.0.1:3000`);
+    this.controller = new AppController();
     this.view = new AppView();
   }
 

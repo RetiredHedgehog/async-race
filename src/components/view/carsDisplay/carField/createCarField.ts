@@ -11,7 +11,7 @@ export default function createCarField(
   wrapper.classList.add('car__wrapper');
 
   const image = document.createElement('img');
-  image.alt = 'car icon';
+  image.alt = 'car';
   image.style.backgroundColor = car.color;
 
   const name = document.createElement('h2');
