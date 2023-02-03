@@ -6,7 +6,6 @@ import requestsEngine from './requests/requestsEngine';
 import requestsGarage from './requests/requestsGarage';
 import requestsWinners from './requests/requestsWinners';
 
-
 export default class AppController {
   DEFAULT_PAGE_INDEX = DEFAULTS.DEFAULT_PAGE_INDEX;
   DEFAULT_ITEMS_PER_GARAGE_PAGE = DEFAULTS.DEFAULT_ITEMS_PER_GARAGE_PAGE;
@@ -15,8 +14,11 @@ export default class AppController {
   CAR_BRANDS = DEFAULTS.DEFAULT_CAR_BRANDS;
   CAR_MODELS = DEFAULTS.DEFAULT_CAR_MODELS;
 
-  async getCars(_page: number = this.DEFAULT_PAGE_INDEX, _limit: number = this.DEFAULT_ITEMS_PER_GARAGE_PAGE): Promise<[Car[], number]> {
-    const params = {_page: `${_page}`, _limit: `${_limit}`};
+  async getCars(
+    _page: number = this.DEFAULT_PAGE_INDEX,
+    _limit: number = this.DEFAULT_ITEMS_PER_GARAGE_PAGE
+  ): Promise<[Car[], number]> {
+    const params = { _page: `${_page}`, _limit: `${_limit}` };
 
     const data = await requestsGarage.getCars(params);
 
@@ -31,20 +33,25 @@ export default class AppController {
     return car;
   }
 
-  async createCar(name: string, color: string = this.DEFAULT_CAR_COLOR): Promise<void> {
+  async createCar(
+    name: string,
+    color: string = this.DEFAULT_CAR_COLOR
+  ): Promise<void> {
     try {
-      const params = {name, color}
+      const params = { name, color };
       await requestsGarage.createCar(params);
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
     }
   }
 
   async createCars(): Promise<void> {
-    const numberOfcarsToCreate = 100
+    const numberOfcarsToCreate = 100;
     for (let i = 0; i < numberOfcarsToCreate; i++) {
-      await this.createCar(getRandomName(this.CAR_BRANDS, this.CAR_MODELS), getRandomColor());
+      await this.createCar(
+        getRandomName(this.CAR_BRANDS, this.CAR_MODELS),
+        getRandomColor()
+      );
     }
   }
 
@@ -54,10 +61,9 @@ export default class AppController {
 
   async updateCar(id: number, name: string, color: string): Promise<void> {
     try {
-      const params = {name, color};
+      const params = { name, color };
       await requestsGarage.updateCar(id, params);
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
     }
   }
@@ -66,7 +72,7 @@ export default class AppController {
     id: number,
     status: 'started' | 'stopped'
   ): Promise<{ velocity: number; distance: number }> {
-    const params = {id: `${id}`, status};
+    const params = { id: `${id}`, status };
     const data = await requestsEngine.toggleEngine(params);
 
     return data;
@@ -75,8 +81,8 @@ export default class AppController {
   async driveCar(id: number): Promise<boolean> {
     const params = {
       id: `${id}`,
-      status: 'drive'
-    }
+      status: 'drive',
+    };
 
     const isDriving = await requestsEngine.driveCar(params);
 
@@ -110,8 +116,7 @@ export default class AppController {
   async createWinner(winner: Winner): Promise<void> {
     try {
       await requestsWinners.createWinner(winner);
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
     }
   }
@@ -120,13 +125,16 @@ export default class AppController {
     await requestsWinners.deleteWinner(id);
   }
 
-  async updateWinner(id: number, numberOfWins: number, time: number): Promise<void> {
-    const params = {numberOfWins: `${numberOfWins}`, time: `${time}`};
+  async updateWinner(
+    id: number,
+    numberOfWins: number,
+    time: number
+  ): Promise<void> {
+    const params = { numberOfWins: `${numberOfWins}`, time: `${time}` };
 
     try {
       await requestsWinners.updateWinner(id, params);
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
     }
   }

@@ -46,7 +46,7 @@ export default class AppView {
     const getCars = async () => {
       await updateCarCounter(controller);
       fillCarsDisplay(controller);
-    }
+    };
 
     buttonGetCars.addEventListener('click', getCars);
 
@@ -58,7 +58,7 @@ export default class AppView {
       await controller.createCars();
       fillCarsDisplay(controller);
       await updateCarCounter(controller);
-    }
+    };
 
     buttonGenerateCars.addEventListener('click', generateCars);
 
