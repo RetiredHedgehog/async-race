@@ -1,5 +1,5 @@
+import { buildURL } from 'components/helpers';
 import { Car } from 'components/Interfaces/car';
-import buildURL from '../apiURLBuilder';
 
 type Params = {
   [key: string]: string

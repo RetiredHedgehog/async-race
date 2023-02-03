@@ -1,4 +1,4 @@
-import buildURL from '../apiURLBuilder';
+import { buildURL } from "components/helpers";
 
 type Params = {
   [key: string]: string

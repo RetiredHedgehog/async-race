@@ -1,5 +1,5 @@
+import { buildURL } from "components/helpers";
 import { Winner } from "components/Interfaces/winner";
-import buildURL from "../apiURLBuilder";
 
 type Params = {
   [key: string]: string

@@ -1,3 +1,4 @@
+import { getRandomColor, getRandomName } from 'components/helpers';
 import { Car } from 'components/Interfaces/car';
 import { Winner } from 'components/Interfaces/winner';
 import * as DEFAULTS from './defaults';
@@ -41,14 +42,6 @@ export default class AppController {
   }
 
   async createCars(): Promise<void> {
-    const getRandomName = (arr1: string[], arr2: string[]): string =>
-      arr1[Math.floor(Math.random() * arr1.length)] +
-      ' ' +
-      arr2[Math.floor(Math.random() * arr2.length)];
-
-    const getRandomColor = (): string =>
-      '#' + ((Math.random() * 0xffffff) << 0).toString(16);
-
     const numberOfcarsToCreate = 100
     for (let i = 0; i < numberOfcarsToCreate; i++) {
       await this.createCar(getRandomName(this.CAR_BRANDS, this.CAR_MODELS), getRandomColor());
