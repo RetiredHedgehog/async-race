@@ -1,4 +1,4 @@
-import { buildURL } from 'components/helpers';
+import { buildURL } from '../../helpers';
 import { Winner } from 'components/Interfaces/winner';
 
 type Params = {

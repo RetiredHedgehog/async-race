@@ -1,4 +1,4 @@
-import { buildURL } from 'components/helpers';
+import { buildURL } from '../../helpers';
 import { Car } from 'components/Interfaces/car';
 
 type Params = {

@@ -1,4 +1,4 @@
-import { buildURL } from 'components/helpers';
+import { buildURL } from '../../helpers';
 
 type Params = {
   [key: string]: string;

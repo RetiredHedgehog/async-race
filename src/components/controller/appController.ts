@@ -1,4 +1,4 @@
-import { getRandomColor, getRandomName } from 'components/helpers';
+import { getRandomColor, getRandomName } from '../helpers';
 import { Car } from 'components/Interfaces/car';
 import { Winner } from 'components/Interfaces/winner';
 import * as DEFAULTS from './defaults';
