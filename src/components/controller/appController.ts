@@ -1,53 +1,18 @@
 import { Car } from 'components/Interfaces/car';
 import { Winner } from 'components/Interfaces/winner';
-import buildURL from './apiURLBuilder';
+import * as DEFAULTS from './defaults';
 import requestsEngine from './requests/requestsEngine';
 import requestsGarage from './requests/requestsGarage';
 import requestsWinners from './requests/requestsWinners';
 
+
 export default class AppController {
-  apiBaseURL: string;
-  garage: string;
-  engine: string;
-  winners: string;
-
-  constructor() {
-    this.apiBaseURL = buildURL();
-    this.garage = `${this.apiBaseURL}/garage`;
-    this.engine = `${this.apiBaseURL}/engine`;
-    this.winners = `${this.apiBaseURL}/winners`;
-  }
-
-  DEFAULT_PAGE_INDEX = 1;
-  DEFAULT_ITEMS_PER_GARAGE_PAGE = 7;
-  DEFAULT_ITEMS_PER_WINNERS_PAGE = 10;
-  DEFAULT_CAR_COLOR = '#ff0000';
-  CAR_BRANDS = [
-    'Ford',
-    'BMW',
-    'Honda',
-    'Hyundai',
-    'Skoda',
-    'Fiat',
-    'Nissan',
-    'Dodge',
-    'Renault',
-    'Volkswagen',
-    'Kia',
-  ];
-  CAR_MODELS = [
-    'Mustang GT',
-    '1-Series Urban Line',
-    'Civic Type R Limited Edition',
-    'Santa Cruz',
-    'Superb',
-    'Stilo Multi Wagon',
-    'Sakura',
-    'Charger',
-    'Logan',
-    'CrossGolf',
-    'K900',
-  ]
+  DEFAULT_PAGE_INDEX = DEFAULTS.DEFAULT_PAGE_INDEX;
+  DEFAULT_ITEMS_PER_GARAGE_PAGE = DEFAULTS.DEFAULT_ITEMS_PER_GARAGE_PAGE;
+  DEFAULT_ITEMS_PER_WINNERS_PAGE = DEFAULTS.DEFAULT_ITEMS_PER_WINNERS_PAGE;
+  DEFAULT_CAR_COLOR = DEFAULTS.DEFAULT_CAR_COLOR;
+  CAR_BRANDS = DEFAULTS.DEFAULT_CAR_BRANDS;
+  CAR_MODELS = DEFAULTS.DEFAULT_CAR_MODELS;
 
   async getCars(_page: number = this.DEFAULT_PAGE_INDEX, _limit: number = this.DEFAULT_ITEMS_PER_GARAGE_PAGE): Promise<[Car[], number]> {
     const params = {_page: `${_page}`, _limit: `${_limit}`};
