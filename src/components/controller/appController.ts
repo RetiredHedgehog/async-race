@@ -1,5 +1,9 @@
 import { Car } from 'components/Interfaces/car';
 import { Winner } from 'components/Interfaces/winner';
+import buildURL from './apiURLBuilder';
+import requestsEngine from './requests/requestsEngine';
+import requestsGarage from './requests/requestsGarage';
+import requestsWinners from './requests/requestsWinners';
 
 export default class AppController {
   apiBaseURL: string;
@@ -7,89 +11,71 @@ export default class AppController {
   engine: string;
   winners: string;
 
-  constructor(apiBaseURL: string) {
-    this.apiBaseURL = apiBaseURL;
-    this.garage = `${apiBaseURL}/garage`;
-    this.engine = `${apiBaseURL}/engine`;
-    this.winners = `${apiBaseURL}/winners`;
+  constructor() {
+    this.apiBaseURL = buildURL();
+    this.garage = `${this.apiBaseURL}/garage`;
+    this.engine = `${this.apiBaseURL}/engine`;
+    this.winners = `${this.apiBaseURL}/winners`;
   }
 
-  DEFAULT_PAGE_INDEX = 1
-  DEFAULT_ITEMS_PER_GARAGE_PAGE = 7
-  DEFAULT_ITEMS_PER_WINNERS_PAGE = 10
-  DEFAULT_CAR_COLOR = '#ff0000'
+  DEFAULT_PAGE_INDEX = 1;
+  DEFAULT_ITEMS_PER_GARAGE_PAGE = 7;
+  DEFAULT_ITEMS_PER_WINNERS_PAGE = 10;
+  DEFAULT_CAR_COLOR = '#ff0000';
+  CAR_BRANDS = [
+    'Ford',
+    'BMW',
+    'Honda',
+    'Hyundai',
+    'Skoda',
+    'Fiat',
+    'Nissan',
+    'Dodge',
+    'Renault',
+    'Volkswagen',
+    'Kia',
+  ];
+  CAR_MODELS = [
+    'Mustang GT',
+    '1-Series Urban Line',
+    'Civic Type R Limited Edition',
+    'Santa Cruz',
+    'Superb',
+    'Stilo Multi Wagon',
+    'Sakura',
+    'Charger',
+    'Logan',
+    'CrossGolf',
+    'K900',
+  ]
 
   async getCars(_page: number = this.DEFAULT_PAGE_INDEX, _limit: number = this.DEFAULT_ITEMS_PER_GARAGE_PAGE): Promise<[Car[], number]> {
-    const params = `${new URLSearchParams({
-      _page: `${_page}`,
-      _limit: `${_limit}`,
-    })}`;
-    const fullUrl = `${this.garage}?${params}`;
+    const params = {_page: `${_page}`, _limit: `${_limit}`};
 
-    const responce = await fetch(fullUrl, {
-      method: 'GET',
-    });
+    const data = await requestsGarage.getCars(params);
 
-    const cars: Car[] | [] =
-      (await responce.json().then((data) => data)) || [];
-    const totalCount =
-      Number(responce.headers.get('X-Total-Count')) || cars.length;
-
-    return [cars, totalCount];
+    return data;
   }
 
-  async getCar(id: number): Promise<Car | object> {
-    const responce = await fetch(`${this.garage}/${id}`, {
-      method: 'GET',
-    });
+  async getCar(id: number): Promise<Car> {
+    const responce = requestsGarage.getCar(id);
 
-    const car: Car | object = await responce.json().then((data) => data);
+    const car = await responce.then((data) => data);
 
     return car;
   }
 
-  async createCar(name: string, color: string = this.DEFAULT_CAR_COLOR): Promise<Car> {
-    const responce = await fetch(`${this.garage}`, {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({ name, color }),
-    });
-
-    const car = await responce.json().then((data) => data);
-
-    return car;
+  async createCar(name: string, color: string = this.DEFAULT_CAR_COLOR): Promise<void> {
+    try {
+      const params = {name, color}
+      await requestsGarage.createCar(params);
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 
   async createCars(): Promise<void> {
-    const carBrands = [
-      'Ford',
-      'BMW',
-      'Honda',
-      'Hyundai',
-      'Skoda',
-      'Fiat',
-      'Nissan',
-      'Dodge',
-      'Renault',
-      'Volkswagen',
-      'Kia',
-    ];
-    const carModels = [
-      'Mustang GT',
-      '1-Series Urban Line',
-      'Civic Type R Limited Edition',
-      'Santa Cruz',
-      'Superb',
-      'Stilo Multi Wagon',
-      'Sakura',
-      'Charger',
-      'Logan',
-      'CrossGolf',
-      'K900',
-    ];
-
     const getRandomName = (arr1: string[], arr2: string[]): string =>
       arr1[Math.floor(Math.random() * arr1.length)] +
       ' ' +
@@ -100,60 +86,41 @@ export default class AppController {
 
     const numberOfcarsToCreate = 100
     for (let i = 0; i < numberOfcarsToCreate; i++) {
-      await this.createCar(getRandomName(carBrands, carModels), getRandomColor());
+      await this.createCar(getRandomName(this.CAR_BRANDS, this.CAR_MODELS), getRandomColor());
     }
   }
 
   async deleteCar(id: number): Promise<void> {
-    await fetch(`${this.garage}/${id}`, { method: 'DELETE' });
+    await requestsGarage.deleteCar(id);
   }
 
   async updateCar(id: number, name: string, color: string): Promise<void> {
-    await fetch(`${this.garage}/${id}`, {
-      method: 'PUT',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({ name, color }),
-    });
+    try {
+      const params = {name, color};
+      await requestsGarage.updateCar(id, params);
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 
   async toggleEngine(
     id: number,
     status: 'started' | 'stopped'
   ): Promise<{ velocity: number; distance: number }> {
-    const params = `${new URLSearchParams({
-      id: `${id}`,
-      status,
-    })}`;
-    const fullUrl = `${this.engine}?${params}`;
-
-    const responce = await fetch(fullUrl, {
-      method: 'PATCH',
-    });
-
-    const data = await responce.json().then((data) => data);
+    const params = {id: `${id}`, status};
+    const data = await requestsEngine.toggleEngine(params);
 
     return data;
   }
 
-  async driveCar(id: number): Promise<{ isDriving: boolean }> {
-    const params = `${new URLSearchParams({
+  async driveCar(id: number): Promise<boolean> {
+    const params = {
       id: `${id}`,
-      status: 'drive',
-    })}`;
-    const fullUrl = `${this.engine}?${params}`;
-
-    const responce = await fetch(fullUrl, {
-      method: 'PATCH',
-    });
-
-    // TODO: throw error and catch to stop a car?
-    if (responce.status === 500) {
-      return { isDriving: false };
+      status: 'drive'
     }
 
-    const isDriving = await responce.json().then((data) => data);
+    const isDriving = await requestsEngine.driveCar(params);
 
     return isDriving;
   }
@@ -164,66 +131,45 @@ export default class AppController {
     _sort: 'id' | 'numberOfWins' | 'time' = 'id',
     _order: 'ASC' | 'DESC' = 'ASC'
   ): Promise<[Winner[] | [], number]> {
-    const params = `${new URLSearchParams({
+    const params = {
       _page: `${_page}`,
       _limit: `${_limit}`,
       _sort,
       _order,
-    })}`;
-    const fullUrl = `${this.winners}?${params}`;
+    };
 
-    const responce = await fetch(fullUrl, {
-      method: 'GET',
-    });
+    const data = await requestsWinners.getWinners(params);
 
-    const winnersArr: Winner[] | [] =
-      (await responce.json().then((data) => data)) || [];
-    const totalCount =
-      Number(responce.headers.get('X-Total-Count')) || winnersArr.length;
-
-    return [winnersArr, totalCount];
+    return data;
   }
 
   async getWinner(id: number): Promise<Winner | object> {
-    const responce = await fetch(`${this.winners}/${id}`, {
-      method: 'GET',
-    });
+    const winner = await requestsWinners.getWinner(id);
 
-    const data: Winner | object = await responce.json().then((data) => data);
-
-    return data;
+    return winner;
   }
 
-  async createWiner(winner: Winner): Promise<Winner | object> {
-    const responce = await fetch(`${this.winners}`, {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify(winner),
-    });
-
-    // TODO: throw error and catch?
-    if (responce.status === 500) {
-      throw new Error();
+  async createWinner(winner: Winner): Promise<void> {
+    try {
+      await requestsWinners.createWinner(winner);
     }
-
-    const data: Winner | object = await responce.json().then((data) => data);
-
-    return data;
+    catch (e) {
+      console.error(e);
+    }
   }
 
   async deleteWinner(id: number): Promise<void> {
-    await fetch(`${this.winners}/${id}`, { method: 'DELETE' });
+    await requestsWinners.deleteWinner(id);
   }
 
-  async updateWinenr(id: number, numberOfWins: number, time: number): Promise<void> {
-    await fetch(`${this.winners}/${id}`, {
-      method: 'PUT',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({ numberOfWins, time }),
-    });
+  async updateWinner(id: number, numberOfWins: number, time: number): Promise<void> {
+    const params = {numberOfWins: `${numberOfWins}`, time: `${time}`};
+
+    try {
+      await requestsWinners.updateWinner(id, params);
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 }

@@ -6,8 +6,8 @@ export default class App {
 
   view: AppView;
 
-  constructor(apiURL: string) {
-    this.controller = new AppController(apiURL);
+  constructor() {
+    this.controller = new AppController();
     this.view = new AppView();
   }
 
