@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "strict": true,
+    "module": "CommonJS",
+    "target": "es3",
+    "moduleResolution": "node",
+  }
+}
